@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const totalAmount = this.items.reduce(function (total, productCode) {
         return total + productCatalogue[productCode].price; //The price of each product is added to the previous total.
       }, 0);
-      console.log("Total", totalAmount);
 
       const deliveryCharge = deliveryChargeRules.find(function (rule) {
         return totalAmount >= rule.threshold;
@@ -47,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
   addButton.forEach(function (button) {
     button.addEventListener("click", function () {
       const productCode = button.getAttribute("data-product-code");
-      console.log("Product Code", productCode);
       basket.add(productCode);
       updateBasketContents();
     });
