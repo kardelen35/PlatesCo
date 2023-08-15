@@ -17,28 +17,29 @@ document.addEventListener("DOMContentLoaded", () => {
     items: [],
     add(productCode) {
       this.items.push(productCode);
-    }, // add plates to basket
+    },
 
     total() {
-      const totalAmount = this.items.reduce(function (total, productCode) {
-        return total + productCatalogue[productCode].price; //The price of each product is added to the previous total.
+      const self = this;
+      let totalAmount = this.items.reduce(function (total, productCode) {
+        return total + productCatalogue[productCode].price;
       }, 0);
 
-      const deliveryCharge = deliveryChargeRules.find(function (rule) {
-        return totalAmount >= rule.threshold;
-      }).charge; //Appropriate delivery charge is found according to teh total amount
-
-      let discountedAmount = totalAmount;
       specialOffers.forEach(function (offer) {
         if (
-          basket.items.includes(offer.productCode) &&
+          self.items.filter((item) => item === offer.productCode).length >= 2 &&
           offer.offerType === "half_price"
         ) {
-          discountedAmount -= productCatalogue[offer.productCode].price / 2;
+          const discount = (productCatalogue[offer.productCode].price / 2) * 2; // Apply the discount for 2 items
+          totalAmount -= discount;
         }
       });
 
-      return discountedAmount + deliveryCharge;
+      const deliveryCharge = deliveryChargeRules.find(function (rule) {
+        return totalAmount >= rule.threshold;
+      }).charge;
+
+      return totalAmount + deliveryCharge;
     },
   };
 
