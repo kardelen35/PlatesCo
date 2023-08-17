@@ -15,8 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const basket = {
     items: [],
+
     add(productCode) {
       this.items.push(productCode);
+      console.log("Items", this.items);
     },
 
     total() {
@@ -26,11 +28,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 0);
 
       specialOffers.forEach(function (offer) {
+        console.log("offer", offer);
         if (
           self.items.filter((item) => item === offer.productCode).length >= 2 &&
           offer.offerType === "half_price"
         ) {
-          const discount = (productCatalogue[offer.productCode].price / 2) * 2; // Apply the discount for 2 items
+          const discount = productCatalogue[offer.productCode].price / 2; // Apply the discount for 2 items
+          console.log("discount", discount);
           totalAmount -= discount;
         }
       });
